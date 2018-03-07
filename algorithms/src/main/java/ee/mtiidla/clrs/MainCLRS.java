@@ -9,7 +9,7 @@ public class MainCLRS {
         int[] input = {5, 4, 3, 2, 1};
         new InsertionSort().sort(input);
 
-        print(Arrays.toString(input));
+        println(input);
 
         int[] input2 = {2, 4, 5, 7, 1, 2, 3, 6};
         new MergeSort().sort(input2, 0, 7);
