@@ -1,16 +1,21 @@
 package ee.mtiidla.cci;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ee.mtiidla.cci.arrays.CheckPermutation;
 import ee.mtiidla.cci.arrays.IsUnique;
+import ee.mtiidla.cci.arrays.OneAway;
+import ee.mtiidla.cci.arrays.StringCompression;
 import ee.mtiidla.cci.arrays.URLify;
+import javafx.util.Pair;
 
 class CrackingCodingInterviewMain {
 
     public static void main(String... args) {
 
-        URLify();
+        StringCompression();
     }
 
     private static void bigO() {
@@ -53,8 +58,34 @@ class CrackingCodingInterviewMain {
         String src = "Mr John    Smith          ";
         char[] input = src.toCharArray();
         int length = src.trim().length();
-        System.out.println(new String(urLify.bruteForce(input, length)));
+//        System.out.println(new String(urLify.bruteForce(input, length)));
+        System.out.println(new String(urLify.myBestGuess(input, length)));
+//        System.out.println(new String(urLify.solution(input, length)));
 
     }
+
+    public static void OneAway() {
+
+        OneAway oneAway = new OneAway();
+        List<Pair<String, String>> input = new ArrayList<>();
+        input.add(new Pair<>("pale", "ple"));
+        input.add(new Pair<>("pales", "pale"));
+        input.add(new Pair<>("pale", "bale"));
+        input.add(new Pair<>("pale", "bae"));
+        for (Pair<String, String> pair : input) {
+            System.out.println(pair + " -> " + oneAway.solution(pair.getKey(), pair.getValue()));
+        }
+    }
+
+    public static void StringCompression() {
+
+        StringCompression stringCompression = new StringCompression();
+        System.out.println(stringCompression.bruteForce("aabcccccaaa"));
+        System.out.println(stringCompression.bruteForce("abcccccccdef"));
+        System.out.println(stringCompression.bruteForce("abccccccccdef"));
+        System.out.println(stringCompression.solution("aabcccccaaa"));
+
+    }
+
 
 }

@@ -11,7 +11,7 @@ public class URLify {
     // Input: "Mr John Smith    ", true length 13
     // Output: "Mr%20John%20Smith"
 
-    // Hints
+    // Hints #53, #118
 
     public char[] bruteForce(char[] input, int length) {
 
@@ -35,8 +35,46 @@ public class URLify {
 
     public char[] myBestGuess(char[] input, int length) {
 
+        int noOfSpaces = (input.length - length) / 2;
 
+        for (int i = length - 1; i >= 0; i--) {
+            if (input[i] != ' ') {
+                input[i + noOfSpaces * 2] = input[i];
+            } else {
+                noOfSpaces--;
+                int index = i + noOfSpaces * 2;
+                input[index] = '%';
+                input[index + 1] = '2';
+                input[index + 2] = '0';
+            }
+        }
 
+        return input;
+    }
+
+    public char[] solution(char[] input, int length) {
+        int spaceCount = 0;
+        for (int i = 0; i < length; i++) {
+            if (input[i] == ' ') {
+                spaceCount++;
+            }
+        }
+        int index = length + spaceCount * 2;
+        if (length < input.length) {
+            input[length] = '\0';
+        }
+
+        for (int i = length - 1; i >= 0; i--) {
+            if (input[i] == ' ') {
+                input[index - 1] = '0';
+                input[index - 2] = '2';
+                input[index - 3] = '%';
+                index = index - 3;
+            } else {
+                input[index - 1] = input[i];
+                index--;
+            }
+        }
         return input;
     }
 
