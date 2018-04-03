@@ -9,13 +9,15 @@ import ee.mtiidla.cci.arrays.IsUnique;
 import ee.mtiidla.cci.arrays.OneAway;
 import ee.mtiidla.cci.arrays.StringCompression;
 import ee.mtiidla.cci.arrays.URLify;
+import ee.mtiidla.cci.stack.QueueWithStacks.MyQueueBruteForce;
+import ee.mtiidla.cci.stack.StackMin;
 import javafx.util.Pair;
 
 class CrackingCodingInterviewMain {
 
     public static void main(String... args) {
 
-        StringCompression();
+
     }
 
     private static void bigO() {
@@ -85,6 +87,30 @@ class CrackingCodingInterviewMain {
         System.out.println(stringCompression.bruteForce("abccccccccdef"));
         System.out.println(stringCompression.solution("aabcccccaaa"));
 
+    }
+
+    public static void QueueWithStacks() {
+
+        MyQueueBruteForce<Integer> queue = new MyQueueBruteForce<>();
+        int[] elements = new int[]{1, 2, 3, 4, 5};
+        for (int element : elements) {
+            queue.push(element);
+        }
+        System.out.println("Peek: " + queue.peek());
+        while (!queue.isEmpty()) {
+            System.out.println("Poll: " + queue.poll());
+        }
+
+    }
+
+    public static void StackMin() {
+        StackMin.MyMinStack<Integer> myMinStack = new StackMin.MyMinStack<>();
+        System.out.println(myMinStack.min());
+        int[] input = new int[]{5, 3, 4, -2, 1, 0, -1};
+        for (int i : input) {
+            myMinStack.push(i);
+            System.out.println(myMinStack.min());
+        }
     }
 
 
