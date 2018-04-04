@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ee.mtiidla.cci.arrays.BinarySearch;
 import ee.mtiidla.cci.arrays.CheckPermutation;
 import ee.mtiidla.cci.arrays.IsUnique;
 import ee.mtiidla.cci.arrays.OneAway;
@@ -17,6 +18,13 @@ class CrackingCodingInterviewMain {
 
     public static void main(String... args) {
 
+        int[] input = new int[]{1, 2, 3, 4, 5, 6, 1000, 2000};
+
+        BinarySearch binarySearch = new BinarySearch();
+        for (int value : input) {
+            System.out.println(binarySearch.iterative(input, value));
+        }
+        System.out.println(binarySearch.iterative(input, 213));
 
     }
 
