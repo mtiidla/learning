@@ -2,32 +2,32 @@ package ee.mtiidla.clrs;
 
 class MergeSort {
 
-    void merge(int[] A, int p, int q, int r) {
+    void merge(int[] array, int start, int middle, int end) {
 
-        int n1 = q - p + 1;
-        int n2 = r - q;
-        int[] L = new int[n1 + 1];
-        int[] R = new int[n2 + 1];
+        int n1 = middle - start + 1;
+        int n2 = end - middle;
+        int[] left = new int[n1 + 1];
+        int[] right = new int[n2 + 1];
 
         for (int i = 0; i < n1; i++) {
-            L[i] = A[p + i];
+            left[i] = array[start + i];
         }
 
         for (int i = 0; i < n2; i++) {
-            R[i] = A[q + i + 1];
+            right[i] = array[middle + i + 1];
         }
 
-        L[n1] = Integer.MAX_VALUE;
-        R[n2] = Integer.MAX_VALUE;
+        left[n1] = Integer.MAX_VALUE;
+        right[n2] = Integer.MAX_VALUE;
 
         int i = 0;
         int j = 0;
-        for (int k = p; k <= r; k++) {
-            if (L[i] <= R[j]) {
-                A[k] = L[i];
+        for (int k = start; k <= end; k++) {
+            if (left[i] <= right[j]) {
+                array[k] = left[i];
                 i++;
             } else {
-                A[k] = R[j];
+                array[k] = right[j];
                 j++;
             }
         }
@@ -35,12 +35,12 @@ class MergeSort {
     }
 
     // O(n log n)
-    void sort(int[] A, int p, int r) {
-        if (p < r) {
-            int q = (p + r) / 2;
-            sort(A, p , q);
-            sort(A, q + 1, r);
-            merge(A, p, q, r);
+    void sort(int[] A, int start, int end) {
+        if (start < end) {
+            int middle = (start + end) / 2;
+            sort(A, start , middle);
+            sort(A, middle + 1, end);
+            merge(A, start, middle, end);
         }
     }
 

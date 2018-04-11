@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ee.mtiidla.cci.arrays.BinarySearch;
 import ee.mtiidla.cci.arrays.CheckPermutation;
 import ee.mtiidla.cci.arrays.IsUnique;
 import ee.mtiidla.cci.arrays.OneAway;
@@ -12,20 +11,34 @@ import ee.mtiidla.cci.arrays.StringCompression;
 import ee.mtiidla.cci.arrays.URLify;
 import ee.mtiidla.cci.stack.QueueWithStacks.MyQueueBruteForce;
 import ee.mtiidla.cci.stack.StackMin;
+import ee.mtiidla.interview.Interview;
 import javafx.util.Pair;
 
 class CrackingCodingInterviewMain {
 
     public static void main(String... args) {
 
-        int[] input = new int[]{1, 2, 3, 4, 5, 6, 1000, 2000};
+//        int[] input = new int[]{8, 4, 2, 1, 3, 6, 5, 7, 12, 10, 9, 11, 14, 13, 15};
+////        int[] input = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+//
+//        BinarySearchTree tree = new BinarySearchTree();
+//        BinarySearchTree.Node root = null;
+//        for (int value : input) {
+//            root = tree.insert(root, value);
+//        }
+////        BinarySearchTree.Node root = tree.fromSortedArray(input);
+//        TreePrinter.print(root);
+//        System.out.println("PRE: " + tree.preOrderTraversal(root));
+//        System.out.println("IN: " + tree.inOrderTraversal(root));
+//        System.out.println("POST: " + tree.postOrderTraversal(root));
+//
+//        TreePrinter.print(root);
 
-        BinarySearch binarySearch = new BinarySearch();
-        for (int value : input) {
-            System.out.println(binarySearch.iterative(input, value));
+        Interview interview = new Interview();
+        String[] inputs = new String[]{"nan", "aaba", "aabca", "abbb", "bbba", "", "ab", "abecbea"};
+        for (String input : inputs) {
+            System.out.println(input + " - " + interview.myBestGuess(input));
         }
-        System.out.println(binarySearch.iterative(input, 213));
-
     }
 
     private static void bigO() {
