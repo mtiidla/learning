@@ -11,7 +11,7 @@ import ee.mtiidla.cci.arrays.StringCompression;
 import ee.mtiidla.cci.arrays.URLify;
 import ee.mtiidla.cci.stack.QueueWithStacks.MyQueueBruteForce;
 import ee.mtiidla.cci.stack.StackMin;
-import ee.mtiidla.interview.Interview;
+import ee.mtiidla.interview.InterviewFB;
 import javafx.util.Pair;
 
 class CrackingCodingInterviewMain {
@@ -34,7 +34,7 @@ class CrackingCodingInterviewMain {
 //
 //        TreePrinter.print(root);
 
-        Interview interview = new Interview();
+        InterviewFB interview = new InterviewFB();
         String[] inputs = new String[]{"nan", "aaba", "aabca", "abbb", "bbba", "", "ab", "abecbea"};
         for (String input : inputs) {
             System.out.println(input + " - " + interview.myBestGuess(input));

@@ -1,6 +1,6 @@
 package ee.mtiidla.interview;
 
-public class Interview {
+public class InterviewFB {
 
     // Remove a character from a string to make it a palindrome.
     // Given a string, we need to check whether it is possible to make this string a palindrome
