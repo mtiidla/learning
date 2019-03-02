@@ -129,7 +129,6 @@ fun main() {
 sealed class Action {
     data class Category(val category: String) : Action()
     data class AutoCategory(val category: String) : Action()
-    object Skip : Action()
     object Exit : Action()
     object Undo : Action()
 }
