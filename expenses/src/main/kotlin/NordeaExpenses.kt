@@ -23,7 +23,8 @@ val CATEGORIES = mapOf(
     "h" to "Ravimid",
     "l" to "Laen, liising, CC",
     "k" to "Kingitus",
-    "m" to "Muu"
+    "m" to "Muu",
+    "-" to "Skip"
 )
 
 val EXCLUSIONS = listOf(
@@ -76,7 +77,6 @@ fun main() {
             is Action.AutoCategory -> {
                 totals[action.category]!!.add(expense)
             }
-            is Action.Skip -> continue@loop
             is Action.Exit -> break@loop
             is Action.Undo -> {
                 expenses.push(expense)
@@ -109,7 +109,8 @@ fun main() {
     }
 
     println("\n-------- Begin Copy -------")
-    results.values.forEach { amount ->
+    results.filterKeys { it != "-" }
+        .values.forEach { amount ->
         if (amount > 0) {
             println(DF.format(amount * dkkRate))
         } else {
@@ -145,9 +146,7 @@ private fun actionForRow(expense: Row): Action {
         print("Enter category: ")
 
         val userInput = readLine()
-        if (userInput == "-") {
-            return Action.Skip
-        }
+
         if (userInput == "z") {
             return Action.Undo
         }
