@@ -1,3 +1,5 @@
+package ee.mtiidla.variance
+
 fun main() {
 
     lateinit var phoneProducer: Manufacturer<Hardware.Phone>

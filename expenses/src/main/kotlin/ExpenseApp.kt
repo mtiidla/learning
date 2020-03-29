@@ -1,11 +1,19 @@
 import java.io.File
-import java.net.URL
 import java.text.DecimalFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Stack
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
+
+class Config(
+    val currency: String,
+    val expenseFileReader: ExpenseFileReader
+)
+
+private val NORDEA = Config("DKK", NordeaExpenseFileReader())
+private val SEB = Config("SEK", SebExpenseFileReader())
+
+val RELEASE: Config = SEB
 
 val CATEGORIES = mapOf(
     "s" to "Söök",
@@ -37,7 +45,9 @@ val AUTO_ASSIGN = mapOf(
 
 fun main() {
 
-    val dkkRate = getCurrencyRate()
+    val currency = RELEASE.currency
+
+    val currencyRate = CurrencyResolver.getCurrencyRate(currency)
     val DF = DecimalFormat("0.00")
 
     println("-------- Categories ----------")
@@ -47,14 +57,14 @@ fun main() {
     println("\n- -> skip expense")
     println("z -> redo previous expense")
     println("exit -> print current totals and exit\n")
-    println("1 DKK -> $dkkRate EUR")
+    println("1 $currency -> $currencyRate EUR")
 
     val file = openFile()
-//    val file = File("/Users/Marko/Downloads/poster.csv")
+//    val file = File("/Users/markot/Documents/kontoutdrag.csv")
     if (file == null) {
         return
     }
-    val input = readNordea(file)
+    val input = RELEASE.expenseFileReader.readFile(file)
 
     val totals = CATEGORIES.keys.associateWith { mutableListOf<Row>() }
 
@@ -66,9 +76,9 @@ fun main() {
     expenses.addAll(expensesList.reversed())
     val undo = Stack<Pair<String, Row>>()
 
-    loop@ while(expenses.isNotEmpty()){
+    loop@ while (expenses.isNotEmpty()) {
         val expense = expenses.pop()
-        val action = actionForRow(expense)
+        val action = actionForRow(currency, expense)
         when (action) {
             is Action.Category -> {
                 totals[action.category]!!.add(expense)
@@ -95,7 +105,7 @@ fun main() {
         .forEach { cat, exp ->
             println("-------- $cat -> ${CATEGORIES[cat]} -------")
             exp.forEach {
-                println(it.toString(dkkRate, DF))
+                println(it.format(currency, currencyRate, DF))
             }
         }
 
@@ -104,7 +114,7 @@ fun main() {
     results.forEach { cat, amount ->
         println(
             "${CATEGORIES[cat]!!.padEnd(20, ' ')} " +
-                "-> ${DF.format(amount)} DKK / ${DF.format(amount * dkkRate)} EUR"
+                    "-> ${DF.format(amount)} $currency / ${DF.format(amount * currencyRate)} EUR"
         )
     }
 
@@ -112,7 +122,7 @@ fun main() {
     results.filterKeys { it != "-" }
         .values.forEach { amount ->
         if (amount > 0) {
-            println(DF.format(amount * dkkRate))
+            println(DF.format(amount * currencyRate))
         } else {
             println()
         }
@@ -122,7 +132,7 @@ fun main() {
     println("\n--------- Incomes --------")
     val incomes = input.filter { it.amount > 0 }
     incomes.forEach {
-        println(it.toString(dkkRate, DF))
+        println(it.format(currency, currencyRate, DF))
     }
 }
 
@@ -133,7 +143,7 @@ sealed class Action {
     object Undo : Action()
 }
 
-private fun actionForRow(expense: Row): Action {
+private fun actionForRow(currency: String, expense: Row): Action {
     var category: String? =
         AUTO_ASSIGN[AUTO_ASSIGN.keys.firstOrNull { expense.title.contains(it, true) }]
     if (category != null) {
@@ -141,7 +151,7 @@ private fun actionForRow(expense: Row): Action {
     }
     while (category == null) {
         println()
-        println(expense)
+        println(expense.format(currency))
         print("Enter category: ")
 
         val userInput = readLine()
@@ -160,35 +170,7 @@ private fun actionForRow(expense: Row): Action {
     return Action.Category(category)
 }
 
-private fun readNordea(file: File): List<Row> {
-    val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-    val regex = "\\s+".toRegex()
-    return file.readLines(Charsets.ISO_8859_1)
-        .asSequence()
-        .filter { it.isNotEmpty() }
-        .drop(1) // header
-        .map { it.split(";") }
-        .map {
-            Row(
-                LocalDate.parse(it[0], dateFormatter),
-                it[1].replace(regex, " "),
-                it[3].replace(",", ".").toDouble()
-            )
-        }.toList()
-}
-
-fun getCurrencyRate(): Double {
-    return try {
-        val response = URL("https://api.exchangeratesapi.io/latest?base=DKK").readText()
-        val rate = "(?<=\"EUR\":)([.0-9]+)(?=,)".toRegex().find(response)!!.groupValues[0]
-        rate.toDouble()
-    } catch (e: Exception) {
-        println("Couldn't load DKK currency rate, please enter e.g. 0.133434: ")
-        readLine()!!.replace(",", ".").toDouble()
-    }
-}
-
-fun openFile(): File? {
+private fun openFile(): File? {
     val chooser = JFileChooser()
     val filter = FileNameExtensionFilter("CSV files", "csv")
     chooser.fileFilter = filter
@@ -201,13 +183,15 @@ fun openFile(): File? {
 
 data class Row(val date: LocalDate, val title: String, val amount: Double) {
 
-    override fun toString(): String = toString(null, null)
+    fun format(currency: String): String {
+        return "$title ----> $amount $currency <---- $date"
+    }
 
-    fun toString(dkkRate: Double? = null, format: DecimalFormat? = null): String {
-        return if (dkkRate == null) {
-            "$title ----> $amount DKK <---- $date"
-        } else {
-            "$title ----> $amount DKK / ${format!!.format(amount * dkkRate)} EUR <---- $date"
-        }
+    fun format(
+        currency: String,
+        currencyRate: Double,
+        format: DecimalFormat
+    ): String {
+        return "$title ----> $amount $currency / ${format.format(amount * currencyRate)} EUR <---- $date"
     }
 }

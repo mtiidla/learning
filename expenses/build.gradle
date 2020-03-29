@@ -28,7 +28,7 @@ compileTestKotlin {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'NordeaExpensesKt'
+        attributes 'Main-Class': 'ExpenseAppKt'
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
