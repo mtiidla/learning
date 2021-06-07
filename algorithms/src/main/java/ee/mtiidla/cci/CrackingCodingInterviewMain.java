@@ -12,7 +12,6 @@ import ee.mtiidla.cci.arrays.URLify;
 import ee.mtiidla.cci.stack.QueueWithStacks.MyQueueBruteForce;
 import ee.mtiidla.cci.stack.StackMin;
 import ee.mtiidla.interview.InterviewFB;
-import javafx.util.Pair;
 
 class CrackingCodingInterviewMain {
 
@@ -134,5 +133,21 @@ class CrackingCodingInterviewMain {
         }
     }
 
+    private static class Pair<T, U> {
+        private T key;
+        private U value;
 
+        public Pair(T key, U value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public T getKey() {
+            return key;
+        }
+
+        public U getValue() {
+            return value;
+        }
+    }
 }

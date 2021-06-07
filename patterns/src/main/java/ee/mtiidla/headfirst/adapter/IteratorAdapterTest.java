@@ -1,7 +1,5 @@
 package ee.mtiidla.headfirst.adapter;
 
-import com.sun.org.apache.xerces.internal.impl.Constants;
-
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -17,11 +15,11 @@ class IteratorAdapterTest {
             System.out.println(enumeration.nextElement());
         }
 
-        @SuppressWarnings("unchecked")
-        Iterator<String> iterator = new EnumerationAdapter<>(Constants.getSAXFeatures());
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
+//        @SuppressWarnings("unchecked")
+//        Iterator<String> iterator = new EnumerationAdapter<>();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
     }
 
 }
