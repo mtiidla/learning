@@ -10,7 +10,7 @@ class SebExpenseFileReader : ExpenseFileReader {
             .asSequence()
             .filter { it.isNotEmpty() }
             .drop(8) // headers
-            .map { it.split(";") }
+            .map { it.split(",") }
             .map {
                 Row(
                     date = LocalDate.parse(it[0], dateFormatter),
