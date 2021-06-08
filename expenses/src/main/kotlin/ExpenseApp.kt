@@ -1,7 +1,8 @@
 import java.io.File
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.LocalDate
-import java.util.Stack
+import java.util.*
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
@@ -26,9 +27,9 @@ val CATEGORIES = mapOf(
     "r" to "Ratas",
     "vr" to "Välismaa reisid",
     "j" to "Kosmeetik/juuksur",
-    "ts" to "Tervis ja sport",
+    "sp" to "Sport",
     "f" to "Meelelahutus",
-    "h" to "Ravimid",
+    "tr" to "Tervis ja ravimid",
     "l" to "Laen, liising, CC",
     "k" to "Kingitus",
     "m" to "Muu",
@@ -40,7 +41,10 @@ val EXCLUSIONS = listOf(
 )
 
 val AUTO_ASSIGN = mapOf(
-    "Teglh" to "s"
+    "SYSTEMBOLAGE" to "s",
+    "COOP" to "s",
+    "HEMKÃP" to "s",
+    "KLARNA ARST" to "s"
 )
 
 fun main() {
@@ -48,10 +52,10 @@ fun main() {
     val currency = RELEASE.currency
 
     val currencyRate = CurrencyResolver.getCurrencyRate(currency)
-    val DF = DecimalFormat("0.00")
+    val DF = DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.UK))
 
     println("-------- Categories ----------")
-    CATEGORIES.forEach { k, v ->
+    CATEGORIES.forEach { (k, v) ->
         println("$k -> $v")
     }
     println("\n- -> skip expense")
